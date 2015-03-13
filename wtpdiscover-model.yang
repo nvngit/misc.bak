@@ -1,0 +1,67 @@
+module wtpdiscover {
+    yang-version 1;
+    namespace "urn:opendaylight:capwap:wtpdiscover-model";
+    prefix "wtpdiscover";
+
+    import common { prefix common; revision-date 2015-02-17; }
+
+    contact "Navin Agrawal <nagrawal@brocade.com>";
+
+    description
+        "This module contains the base data model of CAPWAP AC 
+        WTP Discover component.
+
+        This program and the accompanying materials are made available
+        under the terms of the Eclipse Public License v1.0 which
+        accompanies this distribution, and is available at
+        http://www.eclipse.org/legal/epl-v10.html";
+
+    revision "2015-01-05" {
+        description "Initial revision of wtpdiscover model";
+    }
+
+    grouping discovered-wtp {
+        reference "Section 3.3 RFC 5415"
+        description "Discovered WTP Description"
+
+        leaf ipv4-addr {
+            type inet:ipv4-address;
+        }
+
+        leaf ipv6-addr {
+            type inet:ipv6-address;
+        }
+
+        leaf board-data {
+            uses wtp-board-data;
+        }
+
+        leaf descriptor-data {
+            uses wtp-descriptor;
+        }
+
+        leaf frame-tunnel-mode {
+            uses wtp-frame-tunnel-mode;
+        }
+
+        leaf mac-type {
+            uses wtp-mac-type;
+        }
+
+        leaf radio-info {
+            uses wtp-radio-info;
+        }
+
+        leaf discovery-type {
+            uses wtp-discovery-type;
+        }
+    }
+
+    container discovered-wtps {
+        config false;
+
+        leaf-list wtps {
+            uses discovered-wtp;
+        }
+    }
+}

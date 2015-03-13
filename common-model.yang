@@ -1,0 +1,660 @@
+module common {
+    namespace "urn:opendaylight:capwap:common-model";
+    prefix "common";
+
+    import ietf-inet-types { prefix inet; revision-date 2010-09-24; }
+
+    contact "Navin Agrawal <nagrawal@brocade.com>";
+
+    description
+        "This module contains the base data model of a CAPWAP message types.
+        It rolls up the definitions contained in RFC5415.
+
+        This program and the accompanying materials are made available
+        under the terms of the Eclipse Public License v1.0 which
+        accompanies this distribution, and is available at
+        http://www.eclipse.org/legal/epl-v10.html";
+
+    revision "2015-02-17" {
+        description
+            "Initial revision.";
+        reference "RFC5415";
+    }
+
+    typedef capwap-version {
+        type enumeration {
+	    enum "default" {
+	        value 0;
+	    }
+        }
+    }
+
+    typedef capwap-pkt-type {
+        description "CAPWAP packet type";
+	type uint8 {
+	    range 0..15;
+	}
+    }
+
+    typedef capwap-control-msg-type {
+        description "Values of CAPWAP Control Message Type";
+	type uint32 {
+	    range 1..26;
+	}
+    }
+
+    typedef capwap-control-msg-element-type {
+        description "Values of CAPWAP Control Message Element Type";
+	type uint16 {
+	    range 1..49;
+	}
+    }
+
+    grouping capwap-preamble {
+	reference "TBD"
+        description "Capwap Preamble";
+
+        leaf version {
+            type capwap-version;
+        }
+
+        leaf type {
+            type capwap-pkt-type;
+        }
+    }
+
+    typedef capwap-header-hlen {
+        description "CAPWAP Header HLEN";
+	type uint8 {
+	    range 0..31;
+	}
+    }
+
+    typedef capwap-header-rid {
+        description "CAPWAP Header RID";
+	type uint8 {
+	    range 0..31;
+	}
+    }
+
+    typedef capwap-header-wbid {
+        description "CAPWAP Header WBID";
+	type uint8 {
+	    range 0..31;
+	}
+    }
+
+    typedef capwap-header-flag {
+        description "CAPWAP Header FLAG";
+	type uint8 {
+	    range 0..7;
+	}
+    }
+
+    typedef capwap-header-fragmentoffset {
+        description "CAPWAP Header Fragment Offset";
+	type uint16 {
+	    range 0..8191;
+	}
+    }
+
+    typedef capwap-header-rsvd {
+        description "CAPWAP Header RSVD";
+	type uint8 {
+	    range 0..7;
+	}
+    }
+
+    grouping type-length {
+	reference "TBD"
+        description "Type Length";
+
+        leaf type {
+            type uint16;
+        }
+
+        leaf length {
+            type uint16;
+        }
+    }
+
+    grouping length-value {
+	reference "TBD"
+        description "Length Value";
+
+        leaf length {
+            type uint8;
+        }
+
+        leaf value {
+            type binary;
+        }
+    }
+
+    grouping capwap-header {
+	reference "TBD"
+        description "Capwap Header";
+
+        leaf preamble {
+	    use capwap-preamble;
+	    mandatory true;
+        }
+
+        leaf hlen {
+	    type capwap-header-hlen;
+	    mandatory true;
+        }
+
+        leaf rid {
+	    type capwap-header-rid;
+	    mandatory true;
+        }
+
+        leaf t-flag {
+            type boolean;
+            description "T Flag";
+	    mandatory true;
+        }
+
+        leaf f-flag {
+            type boolean;
+            description "F Flag";
+	    mandatory true;
+        }
+
+        leaf l-flag {
+            type boolean;
+            description "L Flag";
+	    mandatory true;
+        }
+
+        leaf w-flag {
+            type boolean;
+            description "W Flag";
+	    mandatory true;
+        }
+
+        leaf m-flag {
+            type boolean;
+            description "M Flag";
+	    mandatory true;
+        }
+
+        leaf k-flag {
+            type boolean;
+            description "K Flag";
+	    mandatory true;
+        }
+
+        leaf flag {
+	    type capwap-header-flag;
+	    mandatory true;
+        }
+
+        leaf fragmentid {
+            type uint16;
+            description "Fragment ID";
+	    mandatory true;
+        }
+
+        leaf fo {
+            type capwap-header-fragmentoffset;
+            description "Fragment Offset";
+	    mandatory true;
+        }
+
+        leaf rsvd {
+            type capwap-header-rsvd;
+            description "RSVD";
+	    mandatory true;
+        }
+
+        leaf radio-mac-addr {
+	    use length-value;
+        }
+
+        leaf wireless-specific-info {
+	    use length-value;
+        }
+
+        leaf payload {
+	    type binary;
+            description "Payload";
+        }
+
+    }
+
+    grouping capwap-control-header {
+	reference "TBD"
+        description "Capwap Control Header";
+
+        leaf message-type {
+	    type uint32;
+        }
+
+        leaf seq-number {
+	    type uint8;
+        }
+
+        leaf msg-elem-length {
+	    type uint16;
+        }
+
+        leaf flags {
+	    type uint8;
+        }
+
+        leaf message-elements {
+	    type binary;
+        }
+    }
+
+    grouping ac-info-sub-element {
+	reference "TBD"
+        description "AC Information Sub-element";
+
+        leaf vendor-id {
+            type uint32;
+        }
+        leaf type {
+            type uint16;
+        }
+        leaf length {
+            type uint16;
+        }
+        leaf data {
+            type binary;
+        }
+    }
+
+    grouping ac-descriptor-dtls-policy {
+	reference "TBD"
+        description "AC Descriptor DTLS Policy";
+
+        leaf rsvd {
+            type uint8;
+	    range 0..31;
+        }
+
+        leaf D {
+            type boolean;
+        }
+
+        leaf C {
+            type boolean;
+        }
+
+        leaf R {
+            type boolean;
+        }
+    }
+
+    grouping ac-descriptor {
+	reference "TBD"
+        description "AC Descriptor";
+
+        leaf msg-element-hdr {
+	    use type-length;
+        }
+
+        leaf stations {
+            type uint16;
+        }
+
+        leaf limit {
+            type uint16;
+        }
+
+        leaf active-wtp {
+            type uint16;
+        }
+
+        leaf max-wtp {
+            type uint16;
+        }
+
+        leaf security {
+            type uint8;
+        }
+
+        leaf r-mac-field {
+            type uint8;
+        }
+
+        leaf resvd1 {
+            type uint8;
+        }
+
+        leaf dtls-policy {
+            uses ac-descriptor-dtls-policy;
+        }
+
+        leaf info-sub-elements {
+            type binary;
+        }
+    }
+
+    grouping wtp-board-data-se {
+	reference "TBD"
+        description "WTP Board Data Sub-Element";
+
+        leaf type {
+            type uint16;
+            range 0..4;
+        }
+
+        leaf length {
+            type uint16;
+            range 1..1024;
+        }
+
+        leaf value {
+            type binary;
+        }
+    }
+
+    grouping wtp-board-data {
+	reference "TBD"
+        description "WTP Board Data Message Element";
+
+        leaf vendor-id {
+            type uint32;
+        }
+
+        leaf sub-element {
+            uses wtp-board-data-se;
+        }
+    }
+
+    grouping wtp-descriptor-se {
+	reference "TBD"
+        description "WTP Descriptor Sub Element";
+
+        leaf vendor-id {
+            type uint32;
+        }
+
+        leaf type {
+            type uint16;
+            range 0..4;
+        }
+
+        leaf length {
+            type uint16;
+            range 1..1024;
+        }
+
+        leaf value {
+            type binary;
+        }
+    }
+
+    grouping wtp-encryption-se {
+	reference "TBD"
+        description "WTP Encryption Sub Element";
+
+        leaf resvd {
+            type uint8;
+            range 0..7;
+        }
+
+        leaf wbid {
+            type uint8;
+            range 0..31;
+        }
+
+        leaf capabilities {
+            type uint16;
+        }
+    }
+
+    grouping wtp-descriptor {
+	reference "TBD"
+        description "WTP Descriptor Message Element";
+
+        leaf max-radios {
+            type uint8;
+        }
+
+        leaf radios-in-use {
+            type uint8;
+        }
+
+        leaf num-encrypt {
+            type uint8;
+        }
+
+        leaf encrypt-se {
+            uses wtp-encrypt-se;
+        }
+
+        leaf descriptor-se {
+            uses wtp-descriptor-se;
+        }
+    }
+
+    grouping wtp-frame-tunnel-mode {
+	reference "TBD"
+        description "WTP Frame Tunnel Mode Message Element";
+
+        leaf rsvd {
+            type uint8;
+            range 0..15;
+        }
+
+        leaf bit-n {
+            type boolean;
+        }
+
+        leaf bit-e {
+            type boolean;
+        }
+
+        leaf bit-l {
+            type boolean;
+        }
+
+        leaf bit-r {
+            type boolean;
+        }
+    }
+
+    grouping wtp-mac-type {
+	reference "TBD"
+        description "WTP MAC Type Message Element";
+
+        leaf mac-type {
+            type uint8;
+            range 0..2;
+        }
+    }
+
+    grouping wtp-discovery-type {
+	reference "RFC5415"
+        description "WTP Discovery Type Message Element";
+
+        leaf discovery-type {
+            type uint8;
+            range 0..4;
+        }
+    }
+
+    grouping wtp-radio-info {
+	reference "RFC5416"
+        description "802.11 WTP Radio Information Message Element";
+
+        leaf radio-id {
+            type uint8;
+            range 1..31;
+        }
+
+        leaf rsvd {
+            type uint8;
+            range 0..7;
+        }
+
+        leaf rsvd1 {
+            type uint16;
+        }
+
+        leaf rsvd2 {
+            type uint8;
+        }
+
+        leaf rsvd3 {
+            type uint8;
+            range 0..15;
+        }
+
+        leaf type-n {
+            type boolean;
+        }
+
+        leaf type-g {
+            type boolean;
+        }
+
+        leaf type-a {
+            type boolean;
+        }
+
+        leaf type-b {
+            type boolean;
+        }
+    }
+
+    grouping ac-ipv4-list {
+	reference "TBD"
+        description "AC IPv4 List";
+
+        leaf-list ac-ipv4 {
+            type inet:ipv4-address;
+        }
+    }
+
+    grouping ac-ipv6-list {
+	reference "TBD"
+        description "AC IPv6 List";
+
+        leaf-list ac-ipv6 {
+            type inet:ipv6-address;
+        }
+    }
+
+    grouping ac-name {
+	reference "TBD"
+        description "AC Name";
+
+        leaf-list name {
+            type uint8;
+        }
+    }
+
+    grouping ac-name-priority {
+	reference "TBD"
+        description "AC Name Priority";
+
+        leaf priority {
+            type uint8;
+        }
+        leaf-list name {
+            type uint8;
+        }
+    }
+
+    grouping ac-timestamp {
+	reference "TBD"
+        description "AC Timestamp";
+
+        leaf timestamp {
+            type uint32;
+        }
+    }
+
+    grouping ac-mac-acl-entry {
+	reference "TBD"
+        description "AC MAC ACL Entry";
+
+        leaf num-entries {
+            type uint8;
+        }
+
+	leaf-list mac {
+	    uses eui-mac;
+	}
+    }
+
+    grouping add-station {
+	reference "TBD"
+        description "Add Station";
+
+        leaf radio-id {
+            type uint8;
+        }
+
+	leaf-list mac {
+	    uses eui-mac;
+	}
+
+	leaf-list vlan-name {
+	    type uint8;
+	}
+    }
+
+    grouping capwap-control-ipv4-address {
+	reference "TBD"
+        description "Capwap Control IPv4 Address";
+
+        leaf ipv4-address {
+            type inet:ipv4-address;
+        }
+
+	leaf wtp-count {
+	    type uint16;
+	}
+    }
+
+    grouping capwap-control-ipv6-address {
+	reference "TBD"
+        description "Capwap Control IPv6 Address";
+
+        leaf ipv6-address {
+            type inet:ipv6-address;
+        }
+
+	leaf wtp-count {
+	    type uint16;
+	}
+    }
+
+    grouping capwap-local-ipv4-address {
+	reference "TBD"
+        description "Capwap Local IPv4 Address";
+
+        leaf ipv4-address {
+            type inet:ipv4-address;
+        }
+    }
+
+    grouping capwap-local-ipv6-address {
+	reference "TBD"
+        description "Capwap Local IPv6 Address";
+
+        leaf ipv6-address {
+            type inet:ipv6-address;
+        }
+    }
+
+    grouping capwap-timers {
+	reference "TBD"
+        description "Capwap Timers";
+
+        leaf discovery {
+            type uint8;
+        }
+
+        leaf echo-request {
+            type uint8;
+        }
+    }
+}
