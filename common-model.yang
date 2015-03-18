@@ -1,6 +1,6 @@
-module common {
+module common-model {
     namespace "urn:opendaylight:capwap:common-model";
-    prefix "common";
+    prefix "common-model";
 
     import ietf-inet-types { prefix inet; revision-date 2010-09-24; }
 
@@ -29,29 +29,33 @@ module common {
         }
     }
 
+    typedef vendor-id {
+        type uint32;
+    }
+
     typedef capwap-pkt-type {
         description "CAPWAP packet type";
 	type uint8 {
-	    range 0..15;
+	    range "0..15";
 	}
     }
 
     typedef capwap-control-msg-type {
         description "Values of CAPWAP Control Message Type";
 	type uint32 {
-	    range 1..26;
+	    range "1..26";
 	}
     }
 
     typedef capwap-control-msg-element-type {
         description "Values of CAPWAP Control Message Element Type";
 	type uint16 {
-	    range 1..49;
+	    range "1..49";
 	}
     }
 
     grouping capwap-preamble {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Preamble";
 
         leaf version {
@@ -66,61 +70,74 @@ module common {
     typedef capwap-header-hlen {
         description "CAPWAP Header HLEN";
 	type uint8 {
-	    range 0..31;
+	    range "0..31";
 	}
     }
 
     typedef capwap-header-rid {
         description "CAPWAP Header RID";
 	type uint8 {
-	    range 0..31;
+	    range "0..31";
 	}
     }
 
     typedef capwap-header-wbid {
         description "CAPWAP Header WBID";
 	type uint8 {
-	    range 0..31;
+	    range "0..31";
 	}
     }
 
     typedef capwap-header-flag {
         description "CAPWAP Header FLAG";
 	type uint8 {
-	    range 0..7;
+	    range "0..7";
 	}
     }
 
     typedef capwap-header-fragmentoffset {
         description "CAPWAP Header Fragment Offset";
 	type uint16 {
-	    range 0..8191;
+	    range "0..8191";
 	}
     }
 
     typedef capwap-header-rsvd {
         description "CAPWAP Header RSVD";
 	type uint8 {
-	    range 0..7;
+	    range "0..7";
 	}
     }
 
-    grouping type-length {
-	reference "TBD"
-        description "Type Length";
+    grouping wireless-specific-info {
+	reference "TBD";
+        description "TBD";
 
-        leaf type {
-            type uint16;
+        leaf wsi-length {
+            type uint8;
         }
 
-        leaf length {
-            type uint16;
+        leaf wsi-value {
+            type binary;
         }
     }
 
-    grouping length-value {
-	reference "TBD"
-        description "Length Value";
+    grouping msg-element-hdr {
+	reference "TBD";
+        description "TBD";
+
+        leaf length {
+            type uint8;
+        }
+
+        leaf value {
+            type binary;
+        }
+    }
+
+    grouping radio-mac-addr {
+	reference "TBD";
+        description "TBD";
 
         leaf length {
             type uint8;
@@ -132,13 +149,10 @@ module common {
     }
 
     grouping capwap-header {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Header";
 
-        leaf preamble {
-	    use capwap-preamble;
-	    mandatory true;
-        }
+        uses capwap-preamble;
 
         leaf hlen {
 	    type capwap-header-hlen;
@@ -209,12 +223,12 @@ module common {
 	    mandatory true;
         }
 
-        leaf radio-mac-addr {
-	    use length-value;
+	container radio-mac-addr {
+            uses radio-mac-addr;
         }
 
-        leaf wireless-specific-info {
-	    use length-value;
+	container wireless-specific-info {
+            uses wireless-specific-info;
         }
 
         leaf payload {
@@ -225,7 +239,7 @@ module common {
     }
 
     grouping capwap-control-header {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Control Header";
 
         leaf message-type {
@@ -250,11 +264,11 @@ module common {
     }
 
     grouping ac-info-sub-element {
-	reference "TBD"
+	reference "TBD";
         description "AC Information Sub-element";
 
-        leaf vendor-id {
-            type uint32;
+        leaf vendorid {
+            type vendor-id;
         }
         leaf type {
             type uint16;
@@ -268,12 +282,13 @@ module common {
     }
 
     grouping ac-descriptor-dtls-policy {
-	reference "TBD"
+	reference "TBD";
         description "AC Descriptor DTLS Policy";
 
         leaf rsvd {
-            type uint8;
-	    range 0..31;
+            type uint8 {
+	        range "0..31";
+            }
         }
 
         leaf D {
@@ -290,12 +305,10 @@ module common {
     }
 
     grouping ac-descriptor {
-	reference "TBD"
+	reference "TBD";
         description "AC Descriptor";
 
-        leaf msg-element-hdr {
-	    use type-length;
-        }
+        uses msg-element-hdr;
 
         leaf stations {
             type uint16;
@@ -325,9 +338,7 @@ module common {
             type uint8;
         }
 
-        leaf dtls-policy {
-            uses ac-descriptor-dtls-policy;
-        }
+        uses ac-descriptor-dtls-policy;
 
         leaf info-sub-elements {
             type binary;
@@ -335,17 +346,19 @@ module common {
     }
 
     grouping wtp-board-data-se {
-	reference "TBD"
+	reference "TBD";
         description "WTP Board Data Sub-Element";
 
         leaf type {
-            type uint16;
-            range 0..4;
+            type uint16 {
+                range "0..4";
+            }
         }
 
         leaf length {
-            type uint16;
-            range 1..1024;
+            type uint16 {
+                range "1..1024";
+            }
         }
 
         leaf value {
@@ -354,34 +367,34 @@ module common {
     }
 
     grouping wtp-board-data {
-	reference "TBD"
+	reference "TBD";
         description "WTP Board Data Message Element";
 
-        leaf vendor-id {
-            type uint32;
+        leaf vendorid {
+            type vendor-id;
         }
 
-        leaf sub-element {
-            uses wtp-board-data-se;
-        }
+        uses wtp-board-data-se;
     }
 
     grouping wtp-descriptor-se {
-	reference "TBD"
+	reference "TBD";
         description "WTP Descriptor Sub Element";
 
-        leaf vendor-id {
-            type uint32;
+        leaf vendorid {
+            type vendor-id;
         }
 
         leaf type {
-            type uint16;
-            range 0..4;
+            type uint16 {
+                range 0..4;
+            }
         }
 
         leaf length {
-            type uint16;
-            range 1..1024;
+            type uint16 {
+                range 1..1024;
+            }
         }
 
         leaf value {
@@ -390,17 +403,19 @@ module common {
     }
 
     grouping wtp-encryption-se {
-	reference "TBD"
+	reference "TBD";
         description "WTP Encryption Sub Element";
 
         leaf resvd {
-            type uint8;
-            range 0..7;
+            type uint8 {
+                range 0..7;
+            }
         }
 
         leaf wbid {
-            type uint8;
-            range 0..31;
+            type uint8 {
+                range 0..31;
+            }
         }
 
         leaf capabilities {
@@ -409,7 +424,7 @@ module common {
     }
 
     grouping wtp-descriptor {
-	reference "TBD"
+	reference "TBD";
         description "WTP Descriptor Message Element";
 
         leaf max-radios {
@@ -424,22 +439,19 @@ module common {
             type uint8;
         }
 
-        leaf encrypt-se {
-            uses wtp-encrypt-se;
-        }
+        uses wtp-encryption-se;
 
-        leaf descriptor-se {
-            uses wtp-descriptor-se;
-        }
+        uses wtp-descriptor-se;
     }
 
     grouping wtp-frame-tunnel-mode {
-	reference "TBD"
+	reference "TBD";
         description "WTP Frame Tunnel Mode Message Element";
 
         leaf rsvd {
-            type uint8;
-            range 0..15;
+            type uint8 {
+                range "0..15";
+            }
         }
 
         leaf bit-n {
@@ -460,37 +472,41 @@ module common {
     }
 
     grouping wtp-mac-type {
-	reference "TBD"
+	reference "TBD";
         description "WTP MAC Type Message Element";
 
         leaf mac-type {
-            type uint8;
-            range 0..2;
+            type uint8 {
+                range "0..2";
+            }
         }
     }
 
     grouping wtp-discovery-type {
-	reference "RFC5415"
+	reference "RFC5415";
         description "WTP Discovery Type Message Element";
 
         leaf discovery-type {
-            type uint8;
-            range 0..4;
+            type uint8 {
+                range 0..4;
+            }
         }
     }
 
     grouping wtp-radio-info {
-	reference "RFC5416"
+	reference "RFC5416";
         description "802.11 WTP Radio Information Message Element";
 
         leaf radio-id {
-            type uint8;
-            range 1..31;
+            type uint8 {
+                range 1..31;
+            }
         }
 
         leaf rsvd {
-            type uint8;
-            range 0..7;
+            type uint8 {
+                range 0..7;
+            }
         }
 
         leaf rsvd1 {
@@ -502,8 +518,9 @@ module common {
         }
 
         leaf rsvd3 {
-            type uint8;
-            range 0..15;
+            type uint8 {
+                range 0..15;
+            }
         }
 
         leaf type-n {
@@ -524,7 +541,7 @@ module common {
     }
 
     grouping ac-ipv4-list {
-	reference "TBD"
+	reference "TBD";
         description "AC IPv4 List";
 
         leaf-list ac-ipv4 {
@@ -533,7 +550,7 @@ module common {
     }
 
     grouping ac-ipv6-list {
-	reference "TBD"
+	reference "TBD";
         description "AC IPv6 List";
 
         leaf-list ac-ipv6 {
@@ -542,7 +559,7 @@ module common {
     }
 
     grouping ac-name {
-	reference "TBD"
+	reference "TBD";
         description "AC Name";
 
         leaf-list name {
@@ -551,7 +568,7 @@ module common {
     }
 
     grouping ac-name-priority {
-	reference "TBD"
+	reference "TBD";
         description "AC Name Priority";
 
         leaf priority {
@@ -563,7 +580,7 @@ module common {
     }
 
     grouping ac-timestamp {
-	reference "TBD"
+	reference "TBD";
         description "AC Timestamp";
 
         leaf timestamp {
@@ -571,38 +588,8 @@ module common {
         }
     }
 
-    grouping ac-mac-acl-entry {
-	reference "TBD"
-        description "AC MAC ACL Entry";
-
-        leaf num-entries {
-            type uint8;
-        }
-
-	leaf-list mac {
-	    uses eui-mac;
-	}
-    }
-
-    grouping add-station {
-	reference "TBD"
-        description "Add Station";
-
-        leaf radio-id {
-            type uint8;
-        }
-
-	leaf-list mac {
-	    uses eui-mac;
-	}
-
-	leaf-list vlan-name {
-	    type uint8;
-	}
-    }
-
     grouping capwap-control-ipv4-address {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Control IPv4 Address";
 
         leaf ipv4-address {
@@ -615,7 +602,7 @@ module common {
     }
 
     grouping capwap-control-ipv6-address {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Control IPv6 Address";
 
         leaf ipv6-address {
@@ -628,7 +615,7 @@ module common {
     }
 
     grouping capwap-local-ipv4-address {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Local IPv4 Address";
 
         leaf ipv4-address {
@@ -637,7 +624,7 @@ module common {
     }
 
     grouping capwap-local-ipv6-address {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Local IPv6 Address";
 
         leaf ipv6-address {
@@ -646,7 +633,7 @@ module common {
     }
 
     grouping capwap-timers {
-	reference "TBD"
+	reference "TBD";
         description "Capwap Timers";
 
         leaf discovery {

@@ -1,9 +1,9 @@
-module wtpdiscover {
-    yang-version 1;
+module wtpdiscover-model {
     namespace "urn:opendaylight:capwap:wtpdiscover-model";
-    prefix "wtpdiscover";
+    prefix "wtpdiscover-model";
 
-    import common { prefix common; revision-date 2015-02-17; }
+    import ietf-inet-types { prefix inet; revision-date 2010-09-24; }
+    import common-model { prefix common-model; revision-date 2015-02-17; }
 
     contact "Navin Agrawal <nagrawal@brocade.com>";
 
@@ -16,13 +16,13 @@ module wtpdiscover {
         accompanies this distribution, and is available at
         http://www.eclipse.org/legal/epl-v10.html";
 
-    revision "2015-01-05" {
+    revision "2015-02-17" {
         description "Initial revision of wtpdiscover model";
     }
 
     grouping discovered-wtp {
-        reference "Section 3.3 RFC 5415"
-        description "Discovered WTP Description"
+        reference "Section 3.3 RFC 5415";
+        description "Discovered WTP Description";
 
         leaf ipv4-addr {
             type inet:ipv4-address;
@@ -32,36 +32,36 @@ module wtpdiscover {
             type inet:ipv6-address;
         }
 
-        leaf board-data {
-            uses wtp-board-data;
+	container board-data {
+        	uses common-model:wtp-board-data;
         }
 
-        leaf descriptor-data {
-            uses wtp-descriptor;
+	container descriptor {
+        	uses common-model:wtp-descriptor;
         }
 
-        leaf frame-tunnel-mode {
-            uses wtp-frame-tunnel-mode;
+	container frame-tunnel-mode {
+        	uses common-model:wtp-frame-tunnel-mode;
         }
 
-        leaf mac-type {
-            uses wtp-mac-type;
+	container mac-type {
+        	uses common-model:wtp-mac-type;
         }
 
-        leaf radio-info {
-            uses wtp-radio-info;
+	container radio-info {
+        	uses common-model:wtp-radio-info;
         }
 
-        leaf discovery-type {
-            uses wtp-discovery-type;
-        }
+	container discovery-type {
+        	uses common-model:wtp-discovery-type;
+	}
     }
 
     container discovered-wtps {
         config false;
 
-        leaf-list wtps {
-            uses discovered-wtp;
+	list wtps {
+        	uses discovered-wtp;
         }
     }
 }
