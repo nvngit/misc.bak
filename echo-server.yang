@@ -7,6 +7,13 @@ module echo-server {
 
     prefix echo-server;
 
+    description
+        "This yang module describes states and services of a UDP based echo 
+         server, which echos back message sent by clients and also keeps 
+         track of client served. Operational states of this server can be accessed 
+         via REST API. This server also implements notification service by 
+         which arrival of echo from a new client can be informed asynchronously";
+
     grouping echo-client {
 
         leaf client-ip {
