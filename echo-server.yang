@@ -1,0 +1,47 @@
+module echo-server {
+
+    yang-version 1;
+
+    namespace
+      "http://netconfcentral.org/ns/echo-server";
+
+    prefix echo-server;
+
+    grouping echo-client {
+
+        leaf client-ip {
+            type string;
+        }
+
+        leaf last-echo-time {
+            type string;
+        }
+
+        leaf echo-count {
+            type uint32;
+        }
+    }
+
+    container echo-server {
+        config false;
+
+        leaf client-count {
+            type uint32;
+        }
+
+        list clients {
+            key client-ip;
+
+            uses echo-client;
+        }
+    }
+
+    notification new-client {
+
+      description
+        "Indicates arrival of echo-request from new client.";
+
+      uses echo-client;
+
+    } 
+} 
