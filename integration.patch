@@ -1,0 +1,53 @@
+diff --git a/features/index/pom.xml b/features/index/pom.xml
+index 1a81a42..d3857b5 100644
+--- a/features/index/pom.xml
++++ b/features/index/pom.xml
+@@ -272,6 +272,14 @@
+     </dependency>
+ 
+     <dependency>
++      <groupId>org.opendaylight.capwap</groupId>
++      <artifactId>capwap-features</artifactId>
++      <version>${feature.capwap.version}</version>
++      <classifier>features</classifier>
++      <type>xml</type>
++    </dependency>
++
++    <dependency>
+       <groupId>org.opendaylight.snmp</groupId>
+       <artifactId>features-snmp</artifactId>
+       <version>${snmp.plugin.version}</version>
+diff --git a/features/index/src/main/resources/features.xml b/features/index/src/main/resources/features.xml
+index d6c9fd8..92e3a36 100644
+--- a/features/index/src/main/resources/features.xml
++++ b/features/index/src/main/resources/features.xml
+@@ -73,4 +73,5 @@
+     <repository>mvn:org.opendaylight.usc/usc-features/${feature.usc.version}/xml/features</repository>
+     <repository>mvn:org.opendaylight.vpnservice/vpnservice-features/${feature.vpnservice.version}/xml/features</repository>
+     <repository>mvn:org.opendaylight.vtn/features-vtn-manager/${feature.vtn-manager.version}/xml/features</repository>
++    <repository>mvn:org.opendaylight.capwap/capwap-features/${feature.capwap.version}/xml/features</repository>
+ </features>
+diff --git a/features/test/src/main/resources/features.xml b/features/test/src/main/resources/features.xml
+index 2ffcd27..c69b57a 100644
+--- a/features/test/src/main/resources/features.xml
++++ b/features/test/src/main/resources/features.xml
+@@ -65,6 +65,7 @@
+         <feature version='${feature.adsal.version}'>odl-adsal-all</feature>
+         <feature version='${feature.bgpcep.version}'>odl-bgpcep-bgp-all</feature>
+         <feature version='${feature.bgpcep.version}'>odl-bgpcep-pcep-all</feature>
++        <feature version='${feature.capwap.version}'>odl-capwap-ac-rest</feature>
+         <feature version='${didm.version}'>odl-didm-identification-api</feature>
+         <feature version='${didm.version}'>odl-didm-identification</feature>
+         <feature version='${didm.version}'>odl-didm-drivers-api</feature>
+diff --git a/pom.xml b/pom.xml
+index f34d95f..054a924 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -38,6 +38,7 @@
+     <feature.snbi.version>1.1.0-SNAPSHOT</feature.snbi.version>
+     <feature.ttp.version>0.1.0-SNAPSHOT</feature.ttp.version>
+     <feature.usc.version>1.0-SNAPSHOT</feature.usc.version>
++    <feature.capwap.version>0.1.0-SNAPSHOT</feature.capwap.version>
+     <feature.vtn-manager.version>0.3.0-SNAPSHOT</feature.vtn-manager.version>
+     <feature.bgpcep.version>0.4.0-SNAPSHOT</feature.bgpcep.version>
+ <!--
